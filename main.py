@@ -149,7 +149,6 @@ df=pd.read_csv('processed/embeddings.csv', index_col=0)
 df['embeddings'] = df['embeddings'].apply(eval).apply(np.array)
 df.head()
 
-
 def create_context(
         question, df, max_len=1800, size="ada"
 ):
