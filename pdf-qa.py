@@ -1,7 +1,8 @@
 import PyPDF2
 import os
 import openai
-
+import pandas as pd
+import tiktoken
 
 openai.api_key = os.environ.get('OPENAI_API_KEY')
 
@@ -30,7 +31,7 @@ def remove_newlines(serie):
     return serie
 
 
-import pandas as pd
+
 
 # Create a list to store the text files
 texts=[]
@@ -54,7 +55,7 @@ df.head()
 
 
 
-import tiktoken
+
 
 # Load the cl100k_base tokenizer which is designed to work with the ada-002 model
 tokenizer = tiktoken.get_encoding("cl100k_base")
