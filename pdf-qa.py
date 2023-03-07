@@ -3,6 +3,9 @@ import os
 import openai
 import pandas as pd
 import tiktoken
+import numpy as np
+from openai.embeddings_utils import distances_from_embeddings
+import openai
 
 openai.api_key = os.environ.get('OPENAI_API_KEY')
 
@@ -31,8 +34,6 @@ def remove_newlines(serie):
     return serie
 
 
-
-
 # Create a list to store the text files
 texts=[]
 
@@ -52,9 +53,6 @@ df = pd.DataFrame(texts, columns = ['text'])
 df['text'] = remove_newlines(df.text)
 df.to_csv('processed/scraped.csv')
 df.head()
-
-
-
 
 
 # Load the cl100k_base tokenizer which is designed to work with the ada-002 model
@@ -124,9 +122,7 @@ for row in df.iterrows():
 
     # Otherwise, add the text to the list of shortened texts
     else:
-
         shortened.append(row[1]['text'])
-
 
 
 df = pd.DataFrame(shortened, columns=['text'])
@@ -134,7 +130,6 @@ df['n_tokens'] = df.text.apply(lambda x: len(tokenizer.encode(x)))
 df.n_tokens.hist()
 
 
-import openai
 
 df['embeddings'] = df.text.apply(lambda x: openai.Embedding.create(input=x, engine='text-embedding-ada-002')['data'][0]['embedding'])
 
@@ -142,9 +137,6 @@ df.to_csv('processed/embeddings.csv')
 df.head()
 
 
-
-import numpy as np
-from openai.embeddings_utils import distances_from_embeddings
 
 df=pd.read_csv('processed/embeddings.csv', index_col=0)
 df['embeddings'] = df['embeddings'].apply(eval).apply(np.array)
