@@ -163,7 +163,6 @@ def create_context(
     # Get the distances from the embeddings
     df['distances'] = distances_from_embeddings(q_embeddings, df['embeddings'].values, distance_metric='cosine')
 
-
     returns = []
     cur_len = 0
 
